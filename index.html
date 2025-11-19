@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Museo de Ti</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        :root {
+            --bg: #050817;
+            --bg-soft: #0b1022;
+            --card: #12172a;
+            --accent: #f2b87b;
+            --accent-soft: rgba(242, 184, 123, 0.1);
+            --text-main: #f7f7ff;
+            --text-soft: #a8b0d9;
+            --frame-border: rgba(255,255,255,0.16);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: radial-gradient(circle at top, #1f2945 0, #050817 45%);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        /* Pantalla de bienvenida */
+        .intro {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at top, #202948 0, #050817 50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 24px;
+            z-index: 10;
+            transition: opacity .8s ease, visibility .8s ease;
+        }
+
+        .intro.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .intro-title {
+            font-size: 30px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .intro-subtitle {
+            max-width: 460px;
+            font-size: 15px;
+            color: var(--text-soft);
+            margin: 0 0 24px;
+        }
+
+        .btn-main {
+            background: var(--accent);
+            color: #1b1320;
+            border-radius: 999px;
+            padding: 10px 22px;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+        }
+
+        .btn-main:hover {
+            filter: brightness(1.05);
+        }
+
+        .intro-note {
+            margin-top: 18px;
+            font-size: 12px;
+            color: var(--text-soft);
+        }
+
+        .stars {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            animation: twinkle 4s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%,100% { opacity: .2; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.6); }
+        }
+
+        .typewriter {
+            display: inline-block;
+            overflow: hidden;
+            border-right: 2px solid var(--accent);
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink .9s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to   { width: 100%; }
+        }
+
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+
+        /* Contenedor principal */
+        .page {
+            max-width: 1024px;
+            margin: 0 auto;
+            padding: 24px 16px 40px;
+        }
+
+        header {
+            padding-top: 18px;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .badge {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(7, 13, 35, 0.8);
+            border: 1px solid rgba(255,255,255,0.12);
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--text-soft);
+        }
+
+        .title-block h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .title-block p {
+            margin: 2px 0 0;
+            font-size: 13px;
+            color: var(--text-soft);
+        }
+
+        .music-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(17, 24, 48, 0.9);
+            border: 1px solid rgba(255,255,255,0.12);
+            text-decoration: none;
+            color: var(--text-soft);
+        }
+
+        .music-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 999px;
+            background: #34d399;
+            box-shadow: 0 0 12px rgba(52, 211, 153, 0.8);
+        }
+
+        .music-link span {
+            max-width: 200px;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.4fr);
+            gap: 18px;
+            margin-top: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .layout {
+                grid-template-columns: minmax(0,1fr);
+            }
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        /* Sala y galería */
+        .hall-card {
+            background: linear-gradient(135deg, #141a33, #101426);
+            border-radius: 20px;
+            padding: 16px 16px 18px;
+            box-shadow: 0 16px 45px rgba(0,0,0,0.55);
+            border: 1px solid rgba(255,255,255,0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hall-title {
+            font-size: 18px;
+            margin: 0 0 6px;
+        }
+
+        .hall-subtitle {
+            margin: 0 0 14px;
+            font-size: 13px;
+            color: var(--text-soft);
+        }
+
+        .hall-indicator {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 4px;
+        }
+
+        .grid-frames {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0,1fr));
+            gap: 10px;
+        }
+
+        @media (max-width: 520px) {
+            .grid-frames {
+                grid-template-columns: repeat(2, minmax(0,1fr));
+            }
+        }
+
+        .frame {
+            position: relative;
+            border-radius: 16px;
+            background: radial-gradient(circle at top, #28375f, #111426);
+            border: 1px solid var(--frame-border);
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+            overflow: hidden;
+            transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+            animation: float 12s ease-in-out infinite;
+        }
+
+        .frame:nth-child(2) { animation-delay: -4s; }
+        .frame:nth-child(3) { animation-delay: -8s; }
+
+        @keyframes float {
+            0%,100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .frame:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.7);
+            border-color: rgba(242, 184, 123, 0.7);
+        }
+
+        /* NUEVO: contenedor de imagen de la pieza */
+        .frame-image {
+            flex: 1;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 6px;
+        }
+
+        .frame-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .frame-label {
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.75);
+        }
+
+        .frame-main {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .frame-note {
+            font-size: 11px;
+            color: var(--text-soft);
+        }
+
+        .hall-glow {
+            position: absolute;
+            inset: -40%;
+            background: radial-gradient(circle at top, rgba(242,184,123,0.13), transparent 55%);
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* Panel de información */
+        .info-panel {
+            background: rgba(5,8,23,0.9);
+            border-radius: 18px;
+            padding: 16px 16px 18px;
+            border: 1px solid rgba(255,255,255,0.10);
+            box-shadow: 0 18px 55px rgba(0,0,0,0.7);
+        }
+
+        .info-tag {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--accent);
+            margin-bottom: 4px;
+        }
+
+        .info-title {
+            font-size: 18px;
+            margin: 0 0 6px;
+        }
+
+        .info-text {
+            font-size: 14px;
+            color: var(--text-soft);
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+
+        .info-highlight {
+            font-size: 13px;
+            padding: 8px 10px;
+            border-radius: 10px;
+            background: rgba(242, 184, 123, 0.06);
+            border-left: 2px solid rgba(242,184,123,0.6);
+            font-style: italic;
+        }
+
+        .nav-halls {
+            margin-top: 16px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .pill {
+            font-size: 11px;
+            padding: 6px 11px;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.18);
+            background: rgba(17, 24, 48, 0.8);
+            cursor: pointer;
+            color: var(--text-soft);
+        }
+
+        .pill.active {
+            background: var(--accent);
+            color: #1c1420;
+            border-color: transparent;
+        }
+
+        .footer-note {
+            margin-top: 14px;
+            font-size: 11px;
+            color: var(--text-soft);
+            text-align: center;
+        }
+
+        a {
+            color: var(--accent);
+        }
+
+        /* Ocultar salas */
+        .hall {
+            display: none;
+        }
+
+        .hall.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div class="intro" id="intro">
+    <div class="stars" id="stars"></div>
+    <div class="intro-title">
+        <span class="typewriter">Museo de Ti</span>
+    </div>
+    <p class="intro-subtitle">
+        Una pequeña galería dedicada solo a ti.  
+        Cada pieza aquí habla de la persona que eres cuando te miro con calma y cariño.
+    </p>
+    <button class="btn-main" id="enterBtn">Entrar al museo</button>
+    <p class="intro-note">
+        Recomendado: auriculares, un poco de calma y dejar que te acompañen estas palabras.
+    </p>
+</div>
+
+<div class="page">
+    <header>
+        <div>
+            <div class="badge">19 de noviembre · Día del Hombre</div>
+            <div class="title-block">
+                <h1>Museo de Ti</h1>
+                <p>Una exposición íntima sobre la persona que eres.</p>
+            </div>
+        </div>
+        <a class="music-link" href="https://open.spotify.com/" target="_blank">
+            <div class="music-dot"></div>
+            <span>Escuchar la canción / playlist que elegí para ti</span>
+        </a>
+    </header>
+
+    <div class="nav-halls" id="hallNav">
+        <button class="pill active" data-hall="hall1">Sala I · Tu esencia</button>
+        <button class="pill" data-hall="hall2">Sala II · Momentos y símbolos</button>
+        <button class="pill" data-hall="hall3">Sala III · Homenaje final</button>
+    </div>
+
+    <!-- Sala 1 -->
+    <div class="hall active" id="hall1">
+        <div class="layout">
+            <section class="hall-card">
+                <div class="hall-glow"></div>
+                <div class="hall-indicator">Sala I</div>
+                <h2 class="hall-title">Tu esencia</h2>
+                <p class="hall-subtitle">
+                    Aquí están algunos de tus rasgos que más admiro. Cada cuadro es una pieza de ti.
+                </p>
+                <div class="grid-frames">
+                    <div class="frame" data-info="resiliencia">
+                        <div class="frame-image">
+                            <!-- Pega aquí la URL de la imagen de Resiliencia -->
+                            <img src="https://github.com/janethmirella29-jpg/museo/blob/9898157dab8b1f856c6531d2476582174a2b349e/resilencia.jpg" alt="Resiliencia">
+                        </div>
+                        <div class="frame-label">Pieza 01</div>
+                        <div class="frame-main">Resiliencia</div>
+                        <div class="frame-note">El arte de seguir, incluso cuando pesa.</div>
+                    </div>
+                    <div class="frame" data-info="paciencia">
+                        <div class="frame-image">
+                            <!-- URL imagen Paciencia -->
+                            <img src="URL_IMAGEN_PACIENCIA" alt="Paciencia">
+                        </div>
+                        <div class="frame-label">Pieza 02</div>
+                        <div class="frame-main">Paciencia</div>
+                        <div class="frame-note">Tu manera de escuchar y esperar.</div>
+                    </div>
+                    <div class="frame" data-info="amabilidad">
+                        <div class="frame-image">
+                            <!-- URL imagen Amabilidad -->
+                            <img src="URL_IMAGEN_AMABILIDAD" alt="Amabilidad">
+                        </div>
+                        <div class="frame-label">Pieza 03</div>
+                        <div class="frame-main">Amabilidad</div>
+                        <div class="frame-note">La razón por la que todos te quieren.</div>
+                    </div>
+                    <div class="frame" data-info="fuerza">
+                        <div class="frame-image">
+                            <!-- URL imagen Fuerza tranquila -->
+                            <img src="URL_IMAGEN_FUERZA" alt="Fuerza tranquila">
+                        </div>
+                        <div class="frame-label">Pieza 04</div>
+                        <div class="frame-main">Fuerza tranquila</div>
+                        <div class="frame-note">No haces ruido, pero sostienes mucho.</div>
+                    </div>
+                    <div class="frame" data-info="cuidado">
+                        <div class="frame-image">
+                            <!-- URL imagen Cuidado -->
+                            <img src="URL_IMAGEN_CUIDADO" alt="Cuidado">
+                        </div>
+                        <div class="frame-label">Pieza 05</div>
+                        <div class="frame-main">Cuidado</div>
+                        <div class="frame-note">Tu forma de proteger a los tuyos.</div>
+                    </div>
+                    <div class="frame" data-info="querido">
+                        <div class="frame-image">
+                            <!-- URL imagen Te dejas querer -->
+                            <img src="URL_IMAGEN_QUERIDO" alt="Te dejas querer">
+                        </div>
+                        <div class="frame-label">Pieza 06</div>
+                        <div class="frame-main">Te dejas querer</div>
+                        <div class="frame-note">Y eso hace la vida más suave.</div>
+                    </div>
+                </div>
+            </section>
+
+            <aside class="info-panel" id="infoPanel1">
+                <div class="info-tag">Ficha de la pieza</div>
+                <h3 class="info-title" id="infoTitle1">Resiliencia</h3>
+                <p class="info-text" id="infoText1">
+                    Amo tu resiliencia. Esa capacidad tuya de continuar incluso cuando todo se complica,
+                    de avanzar aunque sea despacio, aunque duela. Has pasado por momentos difíciles y,
+                    aun así, sigues adelante con una fuerza tranquila que admiro profundamente.
+                </p>
+                <div class="info-highlight" id="infoHighlight1">
+                    “Arrástrate si es necesario, pero no dejes de avanzar.”  
+                    Tú encarnas esta frase más de lo que te imaginas.
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Sala 2 -->
+    <div class="hall" id="hall2">
+        <div class="layout">
+            <section class="hall-card">
+                <div class="hall-glow"></div>
+                <div class="hall-indicator">Sala II</div>
+                <h2 class="hall-title">Momentos y símbolos</h2>
+                <p class="hall-subtitle">
+                    No son solo recuerdos; son símbolos de lo que hemos vivido y de cómo te veo.
+                </p>
+                <div class="grid-frames">
+                    <div class="frame" data-info="cafe">
+                        <div class="frame-image">
+                            <!-- URL imagen Café (puede ser vino si cambias el texto) -->
+                            <img src="URL_IMAGEN_CAFE" alt="Café">
+                        </div>
+                        <div class="frame-label">Símbolo 01</div>
+                        <div class="frame-main">Café</div>
+                        <div class="frame-note">Las conversaciones en las que el tiempo se detiene.</div>
+                    </div>
+                    <div class="frame" data-info="constelacion">
+                        <div class="frame-image">
+                            <!-- URL imagen Constelación -->
+                            <img src="URL_IMAGEN_CONSTELACION" alt="Constelación">
+                        </div>
+                        <div class="frame-label">Símbolo 02</div>
+                        <div class="frame-main">Constelación</div>
+                        <div class="frame-note">Tu valentía escrita en el cielo.</div>
+                    </div>
+                    <div class="frame" data-info="mapa">
+                        <div class="frame-image">
+                            <!-- URL imagen Mapa -->
+                            <img src="URL_IMAGEN_MAPA" alt="Mapa">
+                        </div>
+                        <div class="frame-label">Símbolo 03</div>
+                        <div class="frame-main">Mapa</div>
+                        <div class="frame-note">Lo que hemos recorrido y lo que viene.</div>
+                    </div>
+                    <div class="frame" data-info="libro">
+                        <div class="frame-image">
+                            <!-- URL imagen Libro -->
+                            <img src="URL_IMAGEN_LIBRO" alt="Libro">
+                        </div>
+                        <div class="frame-label">Símbolo 04</div>
+                        <div class="frame-main">Libro</div>
+                        <div class="frame-note">Tus ideas, tus dudas, tu forma de pensar.</div>
+                    </div>
+                    <div class="frame" data-info="luz">
+                        <div class="frame-image">
+                            <!-- URL imagen Luz -->
+                            <img src="URL_IMAGEN_LUZ" alt="Luz">
+                        </div>
+                        <div class="frame-label">Símbolo 05</div>
+                        <div class="frame-main">Luz</div>
+                        <div class="frame-note">Los días en los que fuiste refugio.</div>
+                    </div>
+                    <div class="frame" data-info="camino">
+                        <div class="frame-image">
+                            <!-- URL imagen Camino -->
+                            <img src="URL_IMAGEN_CAMINO" alt="Camino">
+                        </div>
+                        <div class="frame-label">Símbolo 06</div>
+                        <div class="frame-main">Camino</div>
+                        <div class="frame-note">Lo que quiero seguir caminando a tu lado.</div>
+                    </div>
+                </div>
+            </section>
+
+            <aside class="info-panel" id="infoPanel2">
+                <div class="info-tag">Ficha del símbolo</div>
+                <h3 class="info-title" id="infoTitle2">Café</h3>
+                <p class="info-text" id="infoText2">
+                    El café eres tú hablando con calma, incluso cuando por dentro llevas mucho.
+                    Son esas conversaciones largas en las que me olvido del reloj y recuerdo por qué
+                    me gusta tanto tu manera de ver el mundo.
+                </p>
+                <div class="info-highlight" id="infoHighlight2">
+                    No es la bebida, eres tú haciendo que un momento simple se vuelva importante.
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Sala 3 -->
+    <div class="hall" id="hall3">
+        <div class="layout">
+            <section class="hall-card">
+                <div class="hall-glow"></div>
+                <div class="hall-indicator">Sala III</div>
+                <h2 class="hall-title">Homenaje final</h2>
+                <p class="hall-subtitle">
+                    Una última sala para reunir todo en un solo mensaje: lo que eres, lo que has sido y lo que deseo para ti.
+                </p>
+                <div class="grid-frames">
+                    <div class="frame" data-info="homenaje">
+                        <div class="frame-image">
+                            <!-- URL imagen Homenaje -->
+                            <img src="URL_IMAGEN_HOMENAJE" alt="Homenaje">
+                        </div>
+                        <div class="frame-label">Centro</div>
+                        <div class="frame-main">Homenaje</div>
+                        <div class="frame-note">Lo que veo cuando te miro con calma.</div>
+                    </div>
+                    <div class="frame" data-info="futuro">
+                        <div class="frame-image">
+                            <!-- URL imagen Futuro -->
+                            <img src="URL_IMAGEN_FUTURO" alt="Futuro">
+                        </div>
+                        <div class="frame-label">Visión</div>
+                        <div class="frame-main">Futuro</div>
+                        <div class="frame-note">Lo que deseo para tu camino.</div>
+                    </div>
+                    <div class="frame" data-info="agradecimiento">
+                        <div class="frame-image">
+                            <!-- URL imagen Gratitud -->
+                            <img src="URL_IMAGEN_GRATITUD" alt="Gracias">
+                        </div>
+                        <div class="frame-label">Cierre</div>
+                        <div class="frame-main">Gracias</div>
+                        <div class="frame-note">Por todo lo que eres, incluso cuando dudas de ti.</div>
+                    </div>
+                </div>
+            </section>
+
+            <aside class="info-panel" id="infoPanel3">
+                <div class="info-tag">Mensaje final</div>
+                <h3 class="info-title" id="infoTitle3">Homenaje a ti</h3>
+                <p class="info-text" id="infoText3">
+                    Eres una persona valiosa, noble y fuerte, incluso en esos días en los que te sientes lo contrario.
+                    Este museo existe porque, cuando pienso en ti, no puedo evitar ver muchas versiones tuyas: el que
+                    lucha, el que cuida, el que se cansa, el que sigue.
+                </p>
+                <p class="info-text" id="infoText3b">
+                    Deseo que tengas proyectos que te ilusionen de verdad, espacios donde puedas descansar sin culpa
+                    y personas que te miren con el mismo cariño y respeto con el que yo te miro.
+                </p>
+                <div class="info-highlight" id="infoHighlight3">
+                    Gracias por ser tú, tal como eres hoy, no como “deberías ser”.  
+                    Eso, para mí, ya es suficiente y ya es muchísimo.
+                </div>
+            </aside>
+        </div>
+        <p class="footer-note">
+            Puedes volver a esta página cada vez que lo necesites.  
+            Este museo no busca cambiarte, solo recordarte lo que a veces olvidas de ti.
+        </p>
+    </div>
+</div>
+
+<script>
+    // Estrellas en la intro
+    (function createStars() {
+        const container = document.getElementById('stars');
+        if (!container) return;
+        const total = 45;
+        for (let i = 0; i < total; i++) {
+            const s = document.createElement('div');
+            s.className = 'star';
+            const x = Math.random() * 100;
+            const y = Math.random() * 100;
+            const d = 2 + Math.random() * 4;
+            const delay = -Math.random() * 4;
+            s.style.left = x + '%';
+            s.style.top = y + '%';
+            s.style.width = d + 'px';
+            s.style.height = d + 'px';
+            s.style.animationDelay = delay + 's';
+            container.appendChild(s);
+        }
+    })();
+
+    // Entrada al museo
+    document.getElementById('enterBtn').addEventListener('click', function () {
+        const intro = document.getElementById('intro');
+        intro.classList.add('hidden');
+    });
+
+    // Navegación entre salas
+    const hallButtons = document.querySelectorAll('.pill[data-hall]');
+    const halls = document.querySelectorAll('.hall');
+
+    hallButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetId = btn.getAttribute('data-hall');
+            hallButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            halls.forEach(h => {
+                h.id === targetId ? h.classList.add('active') : h.classList.remove('active');
+            });
+        });
+    });
+
+    // Contenido de las piezas
+    const pieces = {
+        resiliencia: {
+            title: 'Resiliencia',
+            text: 'Amo tu resiliencia. Esa capacidad tuya de continuar incluso cuando todo se complica, de avanzar aunque sea despacio, aunque duela. No siempre eres consciente de ello, pero te has sostenido en momentos que habrían detenido a muchos.',
+            highlight: '“Arrástrate si es necesario, pero no dejes de avanzar.” Tú no solo conoces esta frase, la has vivido.'
+        },
+        paciencia: {
+            title: 'Paciencia',
+            text: 'Tu paciencia no es pasividad; es una forma silenciosa de cuidado. Escuchas, das espacio, esperas. Aun cuando estás cansado, tu forma de estar presente es algo que valoro profundamente.',
+            highlight: 'Me recuerdas que la calma también es una forma de amor.'
+        },
+        amabilidad: {
+            title: 'Amabilidad',
+            text: 'Eres una persona amable de una manera honesta. No necesitas grandes gestos para demostrarlo; está en tus palabras, en cómo miras, en cómo tratas incluso a quienes no conoces tanto.',
+            highlight: 'No es casualidad que todo el mundo te quiera. Te dejas querer, pero sobre todo, haces que querer sea fácil.'
+        },
+        fuerza: {
+            title: 'Fuerza tranquila',
+            text: 'Tu fuerza no hace ruido. No es alarde ni dureza. Es la forma en que te reconstruyes por dentro, en silencio, cada vez que algo te tambalea.',
+            highlight: 'A veces piensas que solo “sobrevives”. Desde afuera, lo que se ve es alguien que sigue, incluso cuando nadie está mirando.'
+        },
+        cuidado: {
+            title: 'Cuidado hacia los demás',
+            text: 'Te importa la gente que quieres. Te fijas en detalles que otros dejarían pasar, haces pequeños gestos que alivian el día del otro. Esa forma tuya de cuidar habla mucho de quién eres.',
+            highlight: 'Tu forma de proteger, acompañar y estar dice más de ti que cualquier discurso.'
+        },
+        querido: {
+            title: 'Te dejas querer',
+            text: 'Tienes algo muy especial: te dejas querer. No todos pueden. Hay algo en ti que genera confianza y abrigo, que invita a quedarse.',
+            highlight: 'A veces no ves lo que generas, pero este museo existe, en parte, por eso: porque estar cerca de ti se siente como hogar.'
+        },
+        cafe: {
+            title: 'Café',
+            text: 'El café eres tú bajando el ritmo del día. Las conversaciones largas, los silencios que no incomodan, las miradas que dicen más que lo que se habla.',
+            highlight: 'Eres una de esas personas con las que una simple taza se vuelve un momento importante.'
+        },
+        constelacion: {
+            title: 'Constelación',
+            text: 'Pienso en ti como una constelación: hecha de muchas partes, algunas más visibles que otras, todas conectadas. Tu valentía no es un gesto aislado, es una suma de pequeñas decisiones.',
+            highlight: 'Aunque a veces te veas como un punto suelto, para mí siempre has sido un conjunto de luces.'
+        },
+        mapa: {
+            title: 'Mapa',
+            text: 'Un mapa no es solo un lugar, es un trayecto. Me gusta pensar en todo lo que has caminado hasta aquí, en lo que hemos recorrido y en lo que aún no conocemos.',
+            highlight: 'No sé exactamente a dónde nos llevará todo, pero sí sé que me alegra que nuestros caminos se crucen aquí.'
+        },
+        libro: {
+            title: 'Libro',
+            text: 'Tu mente es un libro que siempre tiene algo nuevo. Tus ideas, tus dudas, tus preguntas. Me gusta escucharte, incluso cuando no llegamos a una conclusión.',
+            highlight: 'No necesito entender todo lo que piensas para saber que ahí dentro hay mucho valor.'
+        },
+        luz: {
+            title: 'Luz',
+            text: 'Hay días en los que fuiste, sin saberlo, luz para mí. Con una palabra, con tu presencia, con un mensaje en el momento exacto.',
+            highlight: 'Tal vez tú lo veas como algo pequeño. Para mí, fueron días menos pesados gracias a ti.'
+        },
+        camino: {
+            title: 'Camino',
+            text: 'La vida es un camino raro, pero me gusta la idea de caminar un tramo contigo. Con tus ritmos, tus pausas, tus dudas y tus ganas.',
+            highlight: 'No necesito promesas enormes. Me basta con saber que, hoy, seguimos caminando en la misma dirección.'
+        },
+        homenaje: {
+            title: 'Homenaje a ti',
+            text: 'Eres muchas cosas a la vez: fuerte y cansado, valiente y temeroso, paciente y a veces harto. No eres una sola versión, y eso está bien. Este homenaje no es para idealizarte, es para abrazar lo que realmente eres.',
+            highlight: 'No tienes que ser perfecto para ser profundamente valioso.'
+        },
+        futuro: {
+            title: 'Futuro',
+            text: 'Deseo que tu futuro esté lleno de proyectos que te hagan sentir vivo, no solo ocupado. Que tengas tiempo para lo que te importa y espacio para descansar sin culpa.',
+            highlight: 'Ojalá siempre tengas cerca personas que te recuerden lo mucho que vales, incluso en tus días más grises.'
+        },
+        agradecimiento: {
+            title: 'Gracias',
+            text: 'Gracias por compartir tu tiempo, tu energía, tu versión más auténtica, incluso cuando no es la que más te gusta. Gracias por las risas, por las conversaciones, por los días simples.',
+            highlight: 'Gracias, sobre todo, por ser tú. Nada más, nada menos.'
+        }
+    };
+
+    function bindFrames(hallId, panelId, titleId, textId, highlightId) {
+        const hall = document.getElementById(hallId);
+        if (!hall) return;
+        const frames = hall.querySelectorAll('.frame');
+        const titleEl = document.getElementById(titleId);
+        const textEl = document.getElementById(textId);
+        const highlightEl = document.getElementById(highlightId);
+
+        frames.forEach(f => {
+            f.addEventListener('click', () => {
+                const key = f.getAttribute('data-info');
+                const piece = pieces[key];
+                if (!piece) return;
+                titleEl.textContent = piece.title;
+                textEl.textContent = piece.text;
+                if (highlightEl) {
+                    highlightEl.textContent = piece.highlight;
+                }
+            });
+        });
+    }
+
+    bindFrames('hall1', 'infoPanel1', 'infoTitle1', 'infoText1', 'infoHighlight1');
+    bindFrames('hall2', 'infoPanel2', 'infoTitle2', 'infoText2', 'infoHighlight2');
+    bindFrames('hall3', 'infoPanel3', 'infoTitle3', 'infoText3', 'infoHighlight3');
+</script>
+</body>
+</html>
