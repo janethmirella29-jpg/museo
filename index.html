@@ -2,8 +2,13 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Museo de Ti</title>
+    <title>Museo sobre ti</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+
+
     <style>
         :root {
             --bg: #050817;
@@ -22,12 +27,327 @@
 
         body {
             margin: 0;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font-family: "Crimson Text", "Times New Roman", serif;
             background: radial-gradient(circle at top, #1f2945 0, #050817 45%);
             color: var(--text-main);
             min-height: 100vh;
         }
 
+        /* Títulos principales y piezas */
+        h1, h2, h3,
+        .hall-title,
+        .intro-title,
+        .info-title,
+        .frame-main {
+            font-family: "Playfair Display", serif;
+            font-weight: normal;
+        }
+
+        /* Interfaz general*/
+        .badge,
+        .btn-main,
+        .pill,
+        .frame-label,
+        .hall-indicator,
+        .music-link {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        /* Ajustes específicos para la estética romántica */
+        .intro-title {
+            font-size: 50px;
+            letter-spacing: 0.04em;
+            text-transform: none;
+            margin-bottom: 10px;
+        }
+
+        .title-block h1 {
+            margin: 0;
+            font-size: 86px;
+        }
+
+        .hall-title {
+            font-size: 36px;
+            margin: 0 0 6px;
+        }
+
+        .info-title {
+            font-size: 34px;
+            margin: 0 0 6px;
+        }
+
+        .frame-main {
+            font-size: 30px;
+        }
+
+        .intro-subtitle,
+        .hall-subtitle,
+        .info-text,
+        .info-highlight,
+        .frame-note,
+        .footer-note,
+        .title-block p {
+            font-family: "Crimson Text", "Times New Roman", serif;
+        }
+
+        /* Pantalla de bienvenida */
+        .intro {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at top, #202948 0, #050817 50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 34px;
+            z-index: 10;
+            transition: opacity .8s ease, visibility .8s ease;
+        }
+
+        .intro.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .intro-subtitle {
+            max-width: 460px;
+            font-size: 26px;
+            color: var(--text-soft);
+            margin: 0 0 24px;
+        }
+
+        .btn-main {
+            background: var(--accent);
+            color: #1b1320;
+            border-radius: 999px;
+            padding: 10px 22px;
+            font-size: 24px;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+        }
+
+        .btn-main:hover {
+            filter: brightness(1.05);
+        }
+
+        .intro-note {
+            margin-top: 18px;
+            font-size: 23px;
+            color: var(--text-soft);
+        }
+
+        .stars {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            animation: twinkle 4s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%,100% { opacity: .2; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.6); }
+        }
+
+        .typewriter {
+            display: inline-block;
+            overflow: hidden;
+            border-right: 2px solid var(--accent);
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink .9s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to   { width: 100%; }
+        }
+
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+
+        /* Contenedor principal */
+        .page {
+            max-width: 1024px;
+            margin: 0 auto;
+            padding: 24px 16px 40px;
+        }
+
+        header {
+            padding-top: 18px;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .badge {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(7, 13, 35, 0.8);
+            border: 1px solid rgba(255,255,255,0.12);
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--text-soft);
+        }
+
+        .title-block p {
+            margin: 2px 0 0;
+            font-size: 25px;
+            color: var(--text-soft);
+        }
+
+        .music-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(17, 24, 48, 0.9);
+            border: 1px solid rgba(255,255,255,0.12);
+            text-decoration: none;
+            color: var(--text-soft);
+        }
+
+        .music-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 999px;
+            background: #34d399;
+            box-shadow: 0 0 12px rgba(52, 211, 153, 0.8);
+        }
+
+        .music-link span {
+            max-width: 200px;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.4fr);
+            gap: 18px;
+            margin-top: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .layout {
+                grid-template-columns: minmax(0,1fr);
+            }
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        /* Hall-card, paneles, marcos, etc. siguen intactos */
+        /* (Aquí continúa tu CSS tal cual estaba) */
+/* Botón romántico con nota musical */
+.music-thinking {
+    display: inline-block;
+    padding: 10px 22px;
+    background: var(--accent);
+    color: #1b1320;
+    border-radius: 999px;
+    text-decoration: none;
+    font-size: 10px;
+    font-family: "Crimson Text", serif;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+    transition: all 0.35s ease;
+    box-shadow: 0 0 12px rgba(242, 184, 123, 0.25);
+}
+
+.music-thinking:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 18px rgba(242, 184, 123, 0.45);
+    filter: brightness(1.1);
+}
+
+/* Estilo especial para badge y título principal */
+.badge {
+    font-size: 34px;       /* tamaño de letra del badge */
+    margin-bottom: 12px;   /* espacio debajo del badge */
+}
+
+.title-block h1 {
+    font-size: 34px;       /* tamaño del título principal */
+    margin-top: 8px;       /* separación arriba del h1 */
+    margin-bottom: 8px;    /* separación con el texto siguiente */
+}
+
+    </style>
+
+    <meta charset="UTF-8">
+    <title>Museo sobre ti</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Fuentes románticas -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #050817;
+            --bg-soft: #0b1022;
+            --card: #12172a;
+            --accent: #f2b87b;
+            --accent-soft: rgba(242, 184, 123, 0.1);
+            --text-main: #f7f7ff;
+            --text-soft: #a8b0d9;
+            --frame-border: rgba(255,255,255,0.16);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Crimson Text", "Times New Roman", serif;
+            background: radial-gradient(circle at top, #1f2945 0, #050817 45%);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+h1 {
+    font-family: "Great Vibes", cursive;
+    font-size: 38px;
+    font-weight: normal;
+}
+
+/* h2 — Títulos de salas (Sala I, Sala II…) */
+h2, .hall-title {
+    font-family: "Playfair Display", serif;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+/* h3 — Títulos de paneles (Ficha de la pieza, etc.) */
+h3, .info-title {
+    font-family: "Crimson Text", serif;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* Nombre dentro del cuadro (Resiliencia, Paciencia…) */
+.frame-main {
+    font-family: "Playfair Display", serif;
+    font-size: 20px;
+    font-weight: 600;
+}
         /* Pantalla de bienvenida */
         .intro {
             position: fixed;
@@ -49,11 +369,13 @@
         }
 
         .intro-title {
-            font-size: 30px;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-        }
+    font-family: "Great Vibes", cursive !important;
+    font-size: 48px;
+    font-weight: normal;
+    letter-spacing: 0;
+    margin-bottom: 10px;
+}
+
 
         .intro-subtitle {
             max-width: 460px;
@@ -73,6 +395,7 @@
             letter-spacing: 0.08em;
             text-transform: uppercase;
             box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
 
         .btn-main:hover {
@@ -148,6 +471,7 @@
             text-transform: uppercase;
             letter-spacing: 0.16em;
             color: var(--text-soft);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
 
         .title-block h1 {
@@ -172,6 +496,7 @@
             border: 1px solid rgba(255,255,255,0.12);
             text-decoration: none;
             color: var(--text-soft);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
 
         .music-dot {
@@ -231,6 +556,7 @@
             letter-spacing: 0.14em;
             color: rgba(255,255,255,0.6);
             margin-bottom: 4px;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
 
         .grid-frames {
@@ -274,7 +600,7 @@
             border-color: rgba(242, 184, 123, 0.7);
         }
 
-        /* NUEVO: contenedor de imagen de la pieza */
+        /* Contenedor de imagen de la pieza */
         .frame-image {
             flex: 1;
             border-radius: 12px;
@@ -294,6 +620,7 @@
             letter-spacing: 0.12em;
             text-transform: uppercase;
             color: rgba(255,255,255,0.75);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
 
         .frame-main {
@@ -329,6 +656,7 @@
             letter-spacing: 0.16em;
             color: var(--accent);
             margin-bottom: 4px;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
 
         .info-title {
@@ -367,6 +695,7 @@
             background: rgba(17, 24, 48, 0.8);
             cursor: pointer;
             color: var(--text-soft);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
 
         .pill.active {
@@ -394,37 +723,50 @@
         .hall.active {
             display: block;
         }
+
+
     </style>
 </head>
 <body>
 <div class="intro" id="intro">
     <div class="stars" id="stars"></div>
     <div class="intro-title">
-        <span class="typewriter">Museo de Ti</span>
+        <span class="typewriter">Museo sobre ti</span>
     </div>
     <p class="intro-subtitle">
-        Una pequeña galería dedicada solo a ti.  
-        Cada pieza aquí habla de la persona que eres cuando te miro con calma y cariño.
+        Una pequeña galería dedicada solo a ti, Sorata.  
+        Cada pieza aquí habla de la persona que eres através de mis ojos.
     </p>
     <button class="btn-main" id="enterBtn">Entrar al museo</button>
     <p class="intro-note">
-        Recomendado: auriculares, un poco de calma y dejar que te acompañen estas palabras.
+        Recomendación: ponte auriculares, respira profunfo y lee mis palabras.
     </p>
 </div>
 
 <div class="page">
     <header>
         <div>
-            <div class="badge">19 de noviembre · Día del Hombre</div>
+            <div class="badge">Para el amor de mi vida</div>
             <div class="title-block">
-                <h1>Museo de Ti</h1>
+                <h1>Museo sobre ti</h1>
                 <p>Una exposición íntima sobre la persona que eres.</p>
             </div>
-        </div>
-        <a class="music-link" href="https://open.spotify.com/" target="_blank">
-            <div class="music-dot"></div>
-            <span>Escuchar la canción / playlist que elegí para ti</span>
-        </a>
+        
+<div style="margin-top: 10px; width:100%; max-width: 360px;">
+
+
+<div style="margin-top: 10px; width:100%; max-width: 360px;">
+    <a class="music-thinking"
+       href="https://open.spotify.com/intl-es/track/08kb1BkeUTryWWfHevsme8"
+       target="_blank">
+        🎵 La vie en rose
+    </a>
+</div>
+
+
+</div>
+
+
     </header>
 
     <div class="nav-halls" id="hallNav">
@@ -441,43 +783,39 @@
                 <div class="hall-indicator">Sala I</div>
                 <h2 class="hall-title">Tu esencia</h2>
                 <p class="hall-subtitle">
-                    Aquí están algunos de tus rasgos que más admiro. Cada cuadro es una pieza de ti.
+                    Aquí están algunas de las cosas que más admiro de ti. Cada cuadro es una pieza de ti.
                 </p>
                 <div class="grid-frames">
                     <div class="frame" data-info="resiliencia">
                         <div class="frame-image">
-                            <!-- Pega aquí la URL de la imagen de Resiliencia -->
                             <img src="resilencia.jpg" alt="Resiliencia">
                         </div>
                         <div class="frame-label">Pieza 01</div>
                         <div class="frame-main">Resiliencia</div>
-                        <div class="frame-note">El arte de seguir, incluso cuando pesa.</div>
+                        <div class="frame-note">El arte de seguir, incluso cuando todo pesa.</div>
                     </div>
                     <div class="frame" data-info="paciencia">
                         <div class="frame-image">
-                            <!-- URL imagen Paciencia -->
                             <img src="paciencia.jpg" alt="Paciencia">
                         </div>
                         <div class="frame-label">Pieza 02</div>
                         <div class="frame-main">Paciencia</div>
-                        <div class="frame-note">Tu manera de escuchar y esperar.</div>
+                        <div class="frame-note">Tu esfuerzo por escuchar y esperar.</div>
                     </div>
                     <div class="frame" data-info="amabilidad">
                         <div class="frame-image">
-                            <!-- URL imagen Amabilidad -->
                             <img src="amabilidad.jpg" alt="Amabilidad">
                         </div>
                         <div class="frame-label">Pieza 03</div>
                         <div class="frame-main">Amabilidad</div>
-                        <div class="frame-note">La razón por la que todos te quieren.</div>
+                        <div class="frame-note">La razón por la que todos te adoran.</div>
                     </div>
                     <div class="frame" data-info="fuerza">
                         <div class="frame-image">
-                            <!-- URL imagen Fuerza tranquila -->
-                            <img src="fuerza.jpg" alt="Fuerza tranquila">
+                            <img src="fuerza.jpg" alt="Fuerza">
                         </div>
                         <div class="frame-label">Pieza 04</div>
-                        <div class="frame-main">Fuerza tranquila</div>
+                        <div class="frame-main">Fuerza</div>
                         <div class="frame-note">No haces ruido, pero sostienes mucho.</div>
                     </div>
                     <div class="frame" data-info="cuidado">
@@ -486,8 +824,8 @@
                             <img src="protección.jpg" alt="Cuidado">
                         </div>
                         <div class="frame-label">Pieza 05</div>
-                        <div class="frame-main">Cuidado</div>
-                        <div class="frame-note">Tu forma de proteger a los tuyos.</div>
+                        <div class="frame-main">Protección</div>
+                        <div class="frame-note">Tu forma de cuidar y proteger a los que quieres.</div>
                     </div>
                     <div class="frame" data-info="querido">
                         <div class="frame-image">
@@ -525,16 +863,15 @@
                 <div class="hall-indicator">Sala II</div>
                 <h2 class="hall-title">Momentos y símbolos</h2>
                 <p class="hall-subtitle">
-                    No son solo recuerdos; son símbolos de lo que hemos vivido y de cómo te veo.
+                    No son solo recuerdos; son símbolos de lo que vivimos y de cómo te veo.
                 </p>
                 <div class="grid-frames">
                     <div class="frame" data-info="cafe">
                         <div class="frame-image">
-                            <!-- URL imagen Café (puede ser vino si cambias el texto) -->
                             <img src="vino.jpg" alt="Café">
                         </div>
                         <div class="frame-label">Símbolo 01</div>
-                        <div class="frame-main">Café</div>
+                        <div class="frame-main">Vino</div>
                         <div class="frame-note">Las conversaciones en las que el tiempo se detiene.</div>
                     </div>
                     <div class="frame" data-info="constelacion">
@@ -544,7 +881,7 @@
                         </div>
                         <div class="frame-label">Símbolo 02</div>
                         <div class="frame-main">Constelación</div>
-                        <div class="frame-note">Tu valentía escrita en el cielo.</div>
+                        <div class="frame-note">Esa noche las estrellas parecían saberlo.</div>
                     </div>
                     <div class="frame" data-info="mapa">
                         <div class="frame-image">
@@ -571,7 +908,7 @@
                         </div>
                         <div class="frame-label">Símbolo 05</div>
                         <div class="frame-main">Luz</div>
-                        <div class="frame-note">Los días en los que fuiste refugio.</div>
+                        <div class="frame-note">Los días en los que fuiste refugio para mi.</div>
                     </div>
                     <div class="frame" data-info="camino">
                         <div class="frame-image">
@@ -589,7 +926,7 @@
                 <div class="info-tag">Ficha del símbolo</div>
                 <h3 class="info-title" id="infoTitle2">Café</h3>
                 <p class="info-text" id="infoText2">
-                    El café eres tú hablando con calma, incluso cuando por dentro llevas mucho.
+                    El vino eres tú hablando con calma, con pasión, incluso cuando por dentro llevas mucho.
                     Son esas conversaciones largas en las que me olvido del reloj y recuerdo por qué
                     me gusta tanto tu manera de ver el mundo.
                 </p>
@@ -618,7 +955,7 @@
                         </div>
                         <div class="frame-label">Centro</div>
                         <div class="frame-main">Homenaje</div>
-                        <div class="frame-note">Lo que veo cuando te miro con calma.</div>
+                        <div class="frame-note"> Lo que veo cuando quiero todo para ti.</div>
                     </div>
                     <div class="frame" data-info="futuro">
                         <div class="frame-image">
@@ -627,7 +964,7 @@
                         </div>
                         <div class="frame-label">Visión</div>
                         <div class="frame-main">Futuro</div>
-                        <div class="frame-note">Lo que deseo para tu camino.</div>
+                        <div class="frame-note">Lo que deseo para nuestro camino.</div>
                     </div>
                     <div class="frame" data-info="agradecimiento">
                         <div class="frame-image">
@@ -635,25 +972,19 @@
                             <img src="gratitud.jpg" alt="Gracias">
                         </div>
                         <div class="frame-label">Cierre</div>
-                        <div class="frame-main">Gracias</div>
-                        <div class="frame-note">Por todo lo que eres, incluso cuando dudas de ti.</div>
+                        <div class="frame-main">Gratitud</div>
+                        <div class="frame-note">Por todo lo que eres, incluso cuando dudas de ti, pero confías en mí.</div>
                     </div>
                 </div>
             </section>
 
             <aside class="info-panel" id="infoPanel3">
                 <div class="info-tag">Mensaje final</div>
-                <h3 class="info-title" id="infoTitle3">Homenaje a ti</h3>
+                <h3 class="info-title" id="infoTitle3">Homenaje</h3>
                 <p class="info-text" id="infoText3">
-                    Eres una persona valiosa, noble y fuerte, incluso en esos días en los que te sientes lo contrario.
-                    Este museo existe porque, cuando pienso en ti, no puedo evitar ver muchas versiones tuyas: el que
-                    lucha, el que cuida, el que se cansa, el que sigue.
+                    Eres muchas cosas a la vez: fuerte y cansado, valiente y temeroso, paciente y a veces harto. No eres una sola versión, y eso está bien. Este homenaje no es para idealizarte, es para abrazar lo que realmente eres. Y así te amo. Este museo existe porque, cuando pienso en ti, no puedo evitar ver muchas versiones tuyas: el que lucha, el que cuida, el que se cansa, el que sigue.
                 </p>
-                <p class="info-text" id="infoText3b">
-                    Deseo que tengas proyectos que te ilusionen de verdad, espacios donde puedas descansar sin culpa
-                    y personas que te miren con el mismo cariño y respeto con el que yo te miro.
-                </p>
-                <div class="info-highlight" id="infoHighlight3">
+                                <div class="info-highlight" id="infoHighlight3">
                     Gracias por ser tú, tal como eres hoy, no como “deberías ser”.  
                     Eso, para mí, ya es suficiente y ya es muchísimo.
                 </div>
@@ -710,84 +1041,84 @@
     });
 
     // Contenido de las piezas
-    const pieces = {
-        resiliencia: {
-            title: 'Resiliencia',
-            text: 'Amo tu resiliencia. Esa capacidad tuya de continuar incluso cuando todo se complica, de avanzar aunque sea despacio, aunque duela. No siempre eres consciente de ello, pero te has sostenido en momentos que habrían detenido a muchos.',
-            highlight: '“Arrástrate si es necesario, pero no dejes de avanzar.” Tú no solo conoces esta frase, la has vivido.'
-        },
-        paciencia: {
-            title: 'Paciencia',
-            text: 'Tu paciencia no es pasividad; es una forma silenciosa de cuidado. Escuchas, das espacio, esperas. Aun cuando estás cansado, tu forma de estar presente es algo que valoro profundamente.',
-            highlight: 'Me recuerdas que la calma también es una forma de amor.'
-        },
-        amabilidad: {
-            title: 'Amabilidad',
-            text: 'Eres una persona amable de una manera honesta. No necesitas grandes gestos para demostrarlo; está en tus palabras, en cómo miras, en cómo tratas incluso a quienes no conoces tanto.',
-            highlight: 'No es casualidad que todo el mundo te quiera. Te dejas querer, pero sobre todo, haces que querer sea fácil.'
-        },
-        fuerza: {
-            title: 'Fuerza tranquila',
-            text: 'Tu fuerza no hace ruido. No es alarde ni dureza. Es la forma en que te reconstruyes por dentro, en silencio, cada vez que algo te tambalea.',
-            highlight: 'A veces piensas que solo “sobrevives”. Desde afuera, lo que se ve es alguien que sigue, incluso cuando nadie está mirando.'
-        },
-        cuidado: {
-            title: 'Cuidado hacia los demás',
-            text: 'Te importa la gente que quieres. Te fijas en detalles que otros dejarían pasar, haces pequeños gestos que alivian el día del otro. Esa forma tuya de cuidar habla mucho de quién eres.',
-            highlight: 'Tu forma de proteger, acompañar y estar dice más de ti que cualquier discurso.'
-        },
-        querido: {
-            title: 'Te dejas querer',
-            text: 'Tienes algo muy especial: te dejas querer. No todos pueden. Hay algo en ti que genera confianza y abrigo, que invita a quedarse.',
-            highlight: 'A veces no ves lo que generas, pero este museo existe, en parte, por eso: porque estar cerca de ti se siente como hogar.'
-        },
-        cafe: {
-            title: 'Café',
-            text: 'El café eres tú bajando el ritmo del día. Las conversaciones largas, los silencios que no incomodan, las miradas que dicen más que lo que se habla.',
-            highlight: 'Eres una de esas personas con las que una simple taza se vuelve un momento importante.'
-        },
-        constelacion: {
-            title: 'Constelación',
-            text: 'Pienso en ti como una constelación: hecha de muchas partes, algunas más visibles que otras, todas conectadas. Tu valentía no es un gesto aislado, es una suma de pequeñas decisiones.',
-            highlight: 'Aunque a veces te veas como un punto suelto, para mí siempre has sido un conjunto de luces.'
-        },
-        mapa: {
-            title: 'Mapa',
-            text: 'Un mapa no es solo un lugar, es un trayecto. Me gusta pensar en todo lo que has caminado hasta aquí, en lo que hemos recorrido y en lo que aún no conocemos.',
-            highlight: 'No sé exactamente a dónde nos llevará todo, pero sí sé que me alegra que nuestros caminos se crucen aquí.'
-        },
-        libro: {
-            title: 'Libro',
-            text: 'Tu mente es un libro que siempre tiene algo nuevo. Tus ideas, tus dudas, tus preguntas. Me gusta escucharte, incluso cuando no llegamos a una conclusión.',
-            highlight: 'No necesito entender todo lo que piensas para saber que ahí dentro hay mucho valor.'
-        },
-        luz: {
-            title: 'Luz',
-            text: 'Hay días en los que fuiste, sin saberlo, luz para mí. Con una palabra, con tu presencia, con un mensaje en el momento exacto.',
-            highlight: 'Tal vez tú lo veas como algo pequeño. Para mí, fueron días menos pesados gracias a ti.'
-        },
-        camino: {
-            title: 'Camino',
-            text: 'La vida es un camino raro, pero me gusta la idea de caminar un tramo contigo. Con tus ritmos, tus pausas, tus dudas y tus ganas.',
-            highlight: 'No necesito promesas enormes. Me basta con saber que, hoy, seguimos caminando en la misma dirección.'
-        },
-        homenaje: {
-            title: 'Homenaje a ti',
-            text: 'Eres muchas cosas a la vez: fuerte y cansado, valiente y temeroso, paciente y a veces harto. No eres una sola versión, y eso está bien. Este homenaje no es para idealizarte, es para abrazar lo que realmente eres.',
-            highlight: 'No tienes que ser perfecto para ser profundamente valioso.'
-        },
-        futuro: {
-            title: 'Futuro',
-            text: 'Deseo que tu futuro esté lleno de proyectos que te hagan sentir vivo, no solo ocupado. Que tengas tiempo para lo que te importa y espacio para descansar sin culpa.',
-            highlight: 'Ojalá siempre tengas cerca personas que te recuerden lo mucho que vales, incluso en tus días más grises.'
-        },
-        agradecimiento: {
-            title: 'Gracias',
-            text: 'Gracias por compartir tu tiempo, tu energía, tu versión más auténtica, incluso cuando no es la que más te gusta. Gracias por las risas, por las conversaciones, por los días simples.',
-            highlight: 'Gracias, sobre todo, por ser tú. Nada más, nada menos.'
-        }
-    };
+   const pieces = {
+    resiliencia: {
+        title: 'Resiliencia',
+        text: 'Amo tu resiliencia. Esa capacidad tuya de continuar incluso cuando todo se complica, de avanzar aunque sea despacio, aunque duela. Has pasado por momentos difíciles y, aun así, sigues adelante con una fuerza tranquila que admiro profundamente.',
+        highlight: '“Arrástrate si es necesario, pero no dejes de avanzar.” Tú encarnas esta frase más de lo que te imaginas.'
+    },
+    paciencia: {
+        title: 'Paciencia',
+        text: 'Tu paciencia no es pasividad; es una forma silenciosa de buscar cuidado. Te esfuerzas por escuchar, dar espacio, esperar. Aun cuando estás cansado, tu forma de estar presente es algo que valoro profundamente.',
+        highlight: 'Me recuerdas que la calma también es una forma de amor.'
+    },
+    amabilidad: {
+        title: 'Amabilidad',
+        text: 'Eres una persona amable de una manera honesta. No necesitas grandes gestos para demostrarlo; está en tus palabras, en cómo miras, en cómo tratas incluso a quienes no conoces tanto.',
+        highlight: 'No es casualidad que todo el mundo te quiera. Te dejas querer, pero sobre todo, haces que querer sea fácil quererte.'
+    },
+    fuerza: {
+        title: 'Fuerza',
+        text: 'Tu fuerza no hace ruido. No es alarde ni dureza. Es la forma en que te reconstruyes por dentro, en silencio, cada vez que algo te tambalea.',
+        highlight: 'A veces piensas que solo “sobrevives”. Desde afuera, lo que se ve es alguien que sigue, incluso cuando nadie está mirando.'
+    },
+    cuidado: {
+        title: 'Protección',
+        text: 'Te importa la gente que quieres. Te fijas en detalles que otros dejarían pasar, haces pequeños gestos que alivian el día del otro. Esa forma tuya de cuidar habla mucho de quién eres.',
+        highlight: 'Tu forma de proteger, acompañar y estar dice más de ti que cualquier discurso.'
+    },
+    querido: {
+        title: 'Te dejas querer',
+        text: 'Tienes algo muy especial: te dejas querer. No todos pueden. Recibir amor a veces puede dar miedo, pero lo abrazas y te permites ser amado.',
+        highlight: 'A veces no ves lo que generas, pero este museo existe, en parte, por eso: porque te permitiste abrazar mi amor.'
+    },
+    cafe: {
+        title: 'Vino',
+        text: 'El vino eres tú bajando el ritmo del día. Las conversaciones largas, los silencios que no incomodan, las miradas que dicen más que lo que se habla.',
+        highlight: 'Eres una de esas personas con las que una simple copa se vuelve un momento importante.'
+    },
+    constelacion: {
+        title: 'Constelación',
+        text: 'Pienso en ti como una constelación: hecha de muchas partes, algunas más visibles que otras, todas conectadas. Tu valentía no es un gesto aislado, es una suma de pequeñas decisiones.',
+        highlight: '"El cielo no siempre está despejado, pero eso no cambia lo que guarda".'
+    },
+    mapa: {
+        title: 'Mapa',
+        text: 'Un mapa no es solo un lugar, es un trayecto. Me gusta pensar en todo lo que has caminado hasta aquí, en lo que hemos recorrido y en lo que aún no conocemos.',
+        highlight: 'No sé exactamente a dónde nos llevará todo, pero sí sé que me alegra pensar que nuestros caminos al fin recorren la vida entrelazados.'
+    },
+    libro: {
+        title: 'Libro',
+        text: 'Tu mente es un libro que siempre tiene algo nuevo. Tus ideas, tus dudas, tus preguntas. Me gusta escucharte, incluso cuando no llegamos a una conclusión.',
+        highlight: 'No necesito entender todo lo que piensas para saber que ahí dentro hay mucho valor.'
+    },
+    luz: {
+        title: 'Luz',
+        text: 'Hay días en los que fuiste, sin saberlo, luz para mí. Con una palabra, con tu presencia, con un mensaje en el momento exacto.',
+        highlight: 'Tal vez tú lo veas como algo pequeño. Para mí, fuiste un salvavidas tantas veces.'
+    },
+    camino: {
+        title: 'Camino',
+        text: 'La vida es un camino raro, pero me gusta la idea de caminar un tramo contigo. Con tus ritmos, tus pausas, tus dudas y tus ganas.',
+        highlight: 'No necesito promesas enormes. Me basta con saber que, hoy, seguimos caminando en la misma dirección.'
+    },
+    homenaje: {
+        title: 'Homenaje',
+        text: 'Eres muchas cosas a la vez: fuerte y cansado, valiente y temeroso, paciente y a veces harto. No eres una sola versión, y eso está bien. Este homenaje no es para idealizarte, es para abrazar lo que realmente eres. Y así te amo. Este museo existe porque, cuando pienso en ti, no puedo evitar ver muchas versiones tuyas: el que lucha, el que cuida, el que se cansa, el que sigue.',
+        highlight: 'Gracias por ser tú, tal como eres hoy, no como “deberías ser”. Eso, para mí, ya es suficiente y ya es muchísimo.'
+    },
 
+    futuro: {
+        title: 'Futuro',
+        text: 'Deseo que tu futuro esté lleno de pasiones que te hagan sentir vivo. Que tengas tiempo para lo que te importa y espacio para descansar sin culpa. Desearía poder compartir nuestras vidas por siempre, caminando y bailando por el mundo como locos enamorados.',
+        highlight: 'Ojalá siempre tengas cerca personas que te recuerden lo mucho que vales, incluso en tus días más grises.'
+    },
+    agradecimiento: {
+        title: 'Gratitud',
+        text: 'Gracias por compartir tu tiempo, tu energía, tu versión más auténtica, incluso cuando pueda ser doloroso. Gracias por las risas, por las conversaciones, por los días simples.',
+        highlight: 'Gracias, sobre todo, por ser tú. Nada más, nada menos.'
+    }
+};
     function bindFrames(hallId, panelId, titleId, textId, highlightId) {
         const hall = document.getElementById(hallId);
         if (!hall) return;
@@ -816,3 +1147,5 @@
 </script>
 </body>
 </html>
+
+
